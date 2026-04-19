@@ -1,5 +1,5 @@
 package OOP
 
-public class Restaurent {
+public class Restaurant {
 
 }
