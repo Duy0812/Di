@@ -1,168 +1,119 @@
-package OOP;
+package Wed_wedding;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Booking {
 	private String bookingId;
 	private Date bookingDate;
 	private Date eventDate;
 	private String shift;
-	private String status; // Pending, Confirmed, Completed, Cancelled
-	
-		public Booking(String id, Customer customer, BanquetHall hall, Date event, String shift) {
-		this.bookingId = id;
-		this.customer = customer;
-		this.hall = hall;
-		this.eventDate = event;
-		this.shift = shift;
-		this.bookingDate = new Date();
-		this.status = status;
-	}
+	private String status;
+	private double basePrice;
+	private boolean isDepositPaid = false;
 
-	public String getBookingId() {
-		return bookingId;
-	}
-
-	public void setBookingId(String bookingId) {
+	public Booking(String bookingId, Date bookingDate, Date eventDate, String shift, String status, double basePrice) {
+		super();
 		this.bookingId = bookingId;
-	}
-
-	public Date getBookingDate() {
-		return bookingDate;
-	}
-
-	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
-	}
-
-	public Date getEventDate() {
-		return eventDate;
-	}
-
-	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
-	}
-
-	public String getShift() {
-		return shift;
-	}
-
-	public void setShift(String shift) {
 		this.shift = shift;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
 		this.status = status;
+		this.basePrice = basePrice;
 	}
 
-	public double getDepositAmount() {
-		return depositAmount;
-	}
-
-	public void setDepositAmount(double depositAmount) {
-		this.depositAmount = depositAmount;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	public BanquetHall getHall() {
-		return hall;
-	}
-
-	public void setHall(BanquetHall hall) {
-		this.hall = hall;
-	}
-
-	public List<Menu> getMenus() {
-		return menus;
-	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
-	public List<Service> getServices() {
-		return services;
-	}
-
-	public void setServices(List<Service> services) {
-		this.services = services;
-	}
-
-	public Invoice getInvoice() {
-		return invoice;
-	}
-
-	
-
-	// Thể hiện quan hệ kết hợp (Association) trong Class Diagram
 	private Customer customer;
 	private BanquetHall hall;
 	private List<Menu> menus = new ArrayList<>();
 	private List<Service> services = new ArrayList<>();
 	private Invoice invoice; // 1 Booking sinh ra 1 Invoice
 
+	// --- Logic Xác nhận đặt chỗ ---
+	public void confirmBooking(IPayment paymentMethod) {
+		// 1. Kiểm tra nếu đã thanh toán rồi hoặc đã hủy
+		if ("CONFIRMED".equals(this.status)) {
+			System.out.println("Đơn hàng này đã được xác nhận trước đó.");
+			return;
+		}
+		if ("CANCELLED".equals(this.status)) {
+			System.out.println("Không thể xác nhận đơn hàng đã bị hủy.");
+			return;
+		}
 
-	public void addMenu(Menu m) {
-		menus.add(m);
+		// 2. Thực hiện thanh toán cọc qua Interface IPayment
+		double depositAmount = calculateDeposit();
+
+		// Giả sử hàm pay() của IPayment trả về true nếu giao dịch thành công
+		if (paymentMethod != null && paymentMethod.payDeposit(depositAmount)) {
+			this.isDepositPaid = true;
+			this.status = "CONFIRMED"; // Đổi trạng thái sang Đã xác nhận
+			System.out.println("Hệ thống: Thanh toán cọc thành công. Đơn hàng " + bookingId + " đã được XÁC NHẬN.");
+		} else {
+			System.out.println("Hệ thống: Thanh toán thất bại. Vui lòng thử lại.");
+		}
 	}
 
-	public void addService(Service s) {
-		services.add(s);
-	}
-
+	// --- Các hàm tính toán giữ nguyên ---
 	public double calculateTotal() {
-	double total = hall.calculateRentPrice();
-
+		double total = (hall != null) ? hall.calculateRentPrice() : basePrice;
 		for (Menu m : menus)
-			if (m != null) {
+			if (m != null)
 				total += m.getPricePerTable();
-			}
 		for (Service s : services)
-			if (s != null) {
+			if (s != null)
 				total += s.calculateServiceFee();
-			}
 		return total;
 	}
 
 	public double calculateDeposit() {
-		double deposit = calculateTotal() * 0.3;
-		return deposit;
-	}
-	public void confirmBooking() {
-		IPayment p = booking.getPayment();
-		if (p.payDeposit()) {
-            this.status = "CONFIRMED";
-            System.out.println("Booking confirmed!");
-        } else {
-            System.out.println("Cannot confirm booking!");
-        }
-    }
-
-	public void cancelBooking() {
-		this.status = "Cancelled";
-		this.hall.updateStatus("Trống");
+		return calculateTotal() * 0.3;
 	}
 
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
+	// --- Cập nhật lại logic Hủy đơn dựa trên isDepositPaid ---
+	public double calculateCancellationFee() {
+		// Nếu chưa thanh toán cọc thì không phạt (Ngoại lệ 1 trong Use Case)
+		if (!isDepositPaid || "PENDING".equals(this.status)) {
+			return 0.0;
+		}
+
+		Date today = new Date();
+		long diffInMillies = Math.abs(eventDate.getTime() - today.getTime());
+		long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+		if (diffInDays < 7) {
+			return calculateDeposit(); // Phạt 100%
+		} else if (diffInDays < 30) {
+			return calculateDeposit() * 0.5; // Phạt 50%
+		}
+		return 0.0;
 	}
 
-	public void payDeposit(IPayment paymentMethod) {
-		// TODO Auto-generated method stub
-		
+	public void processCancel() {
+		if ("CANCELLED".equals(this.status))
+			return;
+
+		double fee = calculateCancellationFee();
+		double refund = isDepositPaid ? (calculateDeposit() - fee) : 0;
+
+		this.status = "CANCELLED";
+		if (hall != null)
+			hall.updateStatus("Available");
+
+		System.out.println("Đã hủy đơn. Tiền phạt: " + fee + ". Hoàn trả: " + refund);
+	}
+
+	public Date getEventDate() {
+		return eventDate;
+	}
+
+	public String getShift() {
+		return shift;
+	}
+
+	public String getBookingId() {
+		return bookingId;
 	}
 
 }
