@@ -1,6 +1,6 @@
 package OOP;
 
-public class Customer {
+public class Customer implements Observer{
 	private String customerId;
 	private String fullName;
 	private String phone;
@@ -105,9 +105,14 @@ public class Customer {
             });
         }
         System.out.println("==================================================");
+		
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
+	public void notification(Invoice invoice){
+		System.out.println(	
+			"🔔 [" + name + " nhận tin]: Hợp đồng của nhà hàng '" + movie.getTitle() + "' đã có mặt tại cửa hàng!");
+
 }
