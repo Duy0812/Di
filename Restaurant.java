@@ -1,7 +1,7 @@
 package OOP
 
-public class Restaurant {
+public class Restaurant implement Subject{
   private List<Observer> customers = new ArrayList<>();
-  private List<>
+  private List<>;
 
 }
