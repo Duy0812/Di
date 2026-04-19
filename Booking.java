@@ -10,6 +10,7 @@ public class Booking {
 	private Date eventDate;
 	private String shift;
 	private String status; // Pending, Confirmed, Completed, Cancelled
+	
 		public Booking(String id, Customer customer, BanquetHall hall, Date event, String shift) {
 		this.bookingId = id;
 		this.customer = customer;
@@ -104,7 +105,7 @@ public class Booking {
 		return invoice;
 	}
 
-	private double depositAmount;
+	
 
 	// Thể hiện quan hệ kết hợp (Association) trong Class Diagram
 	private Customer customer;
