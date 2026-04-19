@@ -111,7 +111,7 @@ public class Customer implements Observer{
 	public String getFullName() {
 		return fullName;
 	}
-	public void notification(Invoice invoice){
+	public void notification(String message){
 		System.out.println(	
 			"🔔 [" + name + " nhận tin]: Hợp đồng của nhà hàng '" + invoice.getinvoiceId() + "' đã có mặt tại cửa hàng!");
 
