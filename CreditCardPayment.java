@@ -13,5 +13,11 @@ public class CreditCardPayment implements IPayment {
         return true;
     }
 }	}
-
+@Override
+	public boolean payDeposit(double amount) {
+		// Giả lập kết nối ngân hàng
+		System.out.println("Đang kết nối cổng thanh toán thẻ: " + cardNumber);
+		System.out.println("Đã trừ tiền cọc: " + amount + " VNĐ từ tài khoản thẻ.");
+		return true; // Giả định luôn thành công
+	}
 }
