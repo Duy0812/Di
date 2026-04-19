@@ -10,6 +10,16 @@ public class Booking {
 	private Date eventDate;
 	private String shift;
 	private String status;
+		public Booking(String id, Customer customer, BanquetHall hall, Date event, String shift) {
+		this.bookingId = id;
+		this.customer = customer;
+		this.hall = hall;
+		this.eventDate = event;
+		this.shift = shift;
+		this.bookingDate = new Date();
+		this.status = "Pending";
+	}
+
 	public String getBookingId() {
 		return bookingId;
 	}
@@ -103,15 +113,6 @@ public class Booking {
 	private List<Service> services = new ArrayList<>();
 	private Invoice invoice; // 1 Booking sinh ra 1 Invoice
 
-	public Booking(String id, Customer customer, BanquetHall hall, Date event, String shift) {
-		this.bookingId = id;
-		this.customer = customer;
-		this.hall = hall;
-		this.eventDate = event;
-		this.shift = shift;
-		this.bookingDate = new Date();
-		this.status = "Pending";
-	}
 
 	public void addMenu(Menu m) {
 		menus.add(m);
