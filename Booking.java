@@ -123,17 +123,22 @@ public class Booking {
 	}
 
 	public double calculateTotal() {
-		double total = hall.calculateRentPrice();
+	double total = hall.calculateRentPrice();
+
 		for (Menu m : menus)
-			total += m.getPricePerTable();
+			if (m != null) {
+				total += m.getPricePerTable();
+			}
 		for (Service s : services)
-			total += s.calculateServiceFee();
+			if (s != null) {
+				total += s.calculateServiceFee();
+			}
 		return total;
 	}
 
 	public double calculateDeposit() {
-		this.depositAmount = calculateTotal() * 0.3;
-		return depositAmount;
+		double deposit = calculateTotal() * 0.3;
+		return deposit;
 	}
 
 	public void cancelBooking() {
