@@ -44,6 +44,8 @@ public class BanquetHall {
 	public void setHallId(String hallId) {
 		this.hallId = hallId;
 	}
+// danh sách đặt tiệc
+	private List<Booking> hallBooking = new ArrayList<Booking>();
 
 	public boolean checkAvailability(Date date, String shift) {
 		if (this.status.equalsIgnoreCase("đang bảo trì")) {
