@@ -46,10 +46,20 @@ public class BanquetHall {
 	}
 
 	public boolean checkAvailability(Date date, String shift) {
-		if (this.status.equals("Trống")) {
-			return true;
+		if (this.status.equalsIgnoreCase("đang bảo trì")) {
+			System.out.println("Sảnh đang bảo trì");
+			return false;
 		}
-		return false;
+		for (int i = 0; i < hallBooking.size(); i++) {
+			Booking b = hallBooking.get(i);
+			// check ngày đặt và chổ ngòi
+			if (b.getEvenDate().compareTo(date) == 0 && b.getShift().equalsIgnoreCase(shift)) {
+				System.out.println("Sảnh đã đặt");
+				return false;
+			}
+
+		}
+		return true;
 	}
 
 	public void updateStatus(String newStatus) {
