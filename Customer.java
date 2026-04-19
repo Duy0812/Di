@@ -113,6 +113,6 @@ public class Customer implements Observer{
 	}
 	public void notification(Invoice invoice){
 		System.out.println(	
-			"🔔 [" + name + " nhận tin]: Hợp đồng của nhà hàng '" + invoice.getTitle() + "' đã có mặt tại cửa hàng!");
+			"🔔 [" + name + " nhận tin]: Hợp đồng của nhà hàng '" + invoice.getinvoiceId() + "' đã có mặt tại cửa hàng!");
 
 }
