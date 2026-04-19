@@ -12,5 +12,9 @@ public class CashPayment implements IPayment {
 		System.out.printf("Thanh toán tiền mặt thành công: %,.0f VND\n", amount);
 		return true;
 	}
-
+	@Override
+	public boolean payDeposit(double amount) {
+		System.out.println("Nhân viên đã nhận số tiền mặt: " + amount + " VNĐ tại quầy.");
+		return true;
+	}
 }
