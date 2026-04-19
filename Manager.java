@@ -129,6 +129,12 @@ public class Manager extends Staff {
 			}
 		}
 
+		public boolean announce(Customer customer) {
+				if (Restaurent.cancelBooking())
+					return System.out.println("....");
+			else {
+				return System.out.println("...");
+
 		
 		//Hiển thị danh mục thực đơn hiện có
 		public void displayMenuList() {
