@@ -1,5 +1,5 @@
 package OOP;
 
-public class Observer {
+public interface Observer {
   void update (String message);
 }
