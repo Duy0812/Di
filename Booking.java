@@ -140,6 +140,15 @@ public class Booking {
 		double deposit = calculateTotal() * 0.3;
 		return deposit;
 	}
+	public void confirmBooking() {
+		IPayment p = booking.getPayment();
+		if (p.payDeposit()) {
+            this.status = "CONFIRMED";
+            System.out.println("Booking confirmed!");
+        } else {
+            System.out.println("Cannot confirm booking!");
+        }
+    }
 
 	public void cancelBooking() {
 		this.status = "Cancelled";
