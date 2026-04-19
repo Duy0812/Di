@@ -53,5 +53,23 @@ public class Invoice {
 		return paymentDate;
 	}
 
+    public void executeOrder(IPayment method, double amountToPay) {
+        // Thực thi thanh toán và lấy kết quả boolean
+        boolean isSuccess = method.processPayment(amountToPay);
+
+        if (isSuccess) {
+            System.out.println("Hệ thống: Bắt đầu cập nhật trạng thái hóa đơn...");
+            // Chỉ khi thành công mới cập nhật trạng thái Booking
+            if (amountToPay >= booking.getTotalAmount()) {
+                booking.setStatus("Confirmed");
+            } else {
+                booking.setStatus("Deposit Paid");
+            }
+        } else {
+            System.out.println("Hệ thống: Thanh toán thất bại. Vui lòng thử lại!");
+            booking.setStatus("Payment Failed");
+        }
+    }
+}
 
 }
