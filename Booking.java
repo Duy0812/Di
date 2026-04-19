@@ -9,7 +9,7 @@ public class Booking {
 	private Date bookingDate;
 	private Date eventDate;
 	private String shift;
-	private String status;
+	private String status; // Pending, Confirmed, Completed, Cancelled
 		public Booking(String id, Customer customer, BanquetHall hall, Date event, String shift) {
 		this.bookingId = id;
 		this.customer = customer;
@@ -17,7 +17,7 @@ public class Booking {
 		this.eventDate = event;
 		this.shift = shift;
 		this.bookingDate = new Date();
-		this.status = "Pending";
+		this.status = status;
 	}
 
 	public String getBookingId() {
