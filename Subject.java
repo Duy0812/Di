@@ -1,5 +1,7 @@
 package OOP
 
-public class Subject {
+public class interface Subject {
+  void registerObverver();
+  void 
 
 }
