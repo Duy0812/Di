@@ -1,23 +1,29 @@
 package OOP;
 
-public class Customer implements Observer{
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+public class Customer implements Observer {
 	private String customerId;
 	private String fullName;
 	private String phone;
 	private String email;
 	private String address;
+	private String passWord;
 
 	private static List<Customer> customerDB = new ArrayList<>();
-    private static List<Booking> bookingDB = new ArrayList<>();
+	private static List<Booking> bookingDB = new ArrayList<>();
 
-	
-	public Customer(String customerId, String fullName, String phone, String email, String address) {
+	public Customer(String customerId, String fullName, String phone, String email, String address, String passWord) {
 		super();
 		this.customerId = customerId;
 		this.fullName = fullName;
 		this.phone = phone;
 		this.email = email;
 		this.address = address;
+		this.passWord = passWord;
 	}
 
 	public String getCustomerId() {
@@ -56,63 +62,76 @@ public class Customer implements Observer{
 		this.fullName = fullName;
 	}
 
-	public void registerAccount() {
-		boolean emailExists = customerDB.stream()
-                .anyMatch(c -> c.getEmail().equals(this.email));
+	public String getPassWord() {
+		return passWord;
+	}
 
-        if (emailExists) {
-            System.out.println("❌ Đăng ký thất bại: Email '" + this.email + "' đã được sử dụng.");
-            return false;
-        }
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	public boolean registerAccount() {
+		boolean emailExists = customerDB.stream().anyMatch(c -> c.getEmail().equals(this.email));
+
+		if (emailExists) {
+			System.out.println("❌ Đăng ký thất bại: Email '" + this.email + "' đã được sử dụng.");
+			return false;
+		}
 
 		customerDB.add(this);
-        System.out.println("✅ Đăng ký thành công tài khoản cho khách hàng: " + this.fullName);
-        return true;
+		System.out.println("✅ Đăng ký thành công tài khoản cho khách hàng: " + this.fullName);
+		return true;
 	}
 
 	public static Optional<Customer> login(String inputEmail, String inputPassword) {
-        System.out.println("\nĐang xác thực tài khoản: " + inputEmail + "...");
-        
-        Optional<Customer> loggedInUser = customerDB.stream()
-                .filter(c -> c.getEmail().equals(inputEmail) && c.getPassword().equals(inputPassword))
-                .findFirst();
+		System.out.println("\nĐang xác thực tài khoản: " + inputEmail + "...");
 
-        if (loggedInUser.isPresent()) {
-            System.out.println("✅ Đăng nhập thành công! Chào mừng " + loggedInUser.get().getFullName());
-        } else {
-            System.out.println("❌ Đăng nhập thất bại: Sai email hoặc mật khẩu.");
-        }
-        
-        return loggedInUser;
+		Optional<Customer> loggedInUser = customerDB.stream()
+				.filter(c -> c.getEmail().equals(inputEmail) && c.getPassWord().equals(inputPassword)).findFirst();
+
+		if (loggedInUser.isPresent()) {
+			System.out.println("✅ Đăng nhập thành công! Chào mừng " + loggedInUser.get().getFullName());
+		} else {
+			System.out.println("❌ Đăng nhập thất bại: Sai email hoặc mật khẩu.");
+		}
+
+		return loggedInUser;
 	}
 
 	public void viewBookingHistory() {
 		System.out.println("\n=== LỊCH SỬ ĐẶT TIỆC CỦA " + this.fullName.toUpperCase() + " ===");
 
-        // Dùng Java 8 Stream để lọc ra các đơn đặt tiệc thuộc về Customer này
-        List<Booking> myBookings = bookingDB.stream()
-                .filter(b -> b.getCustomerId().equals(this.customerId))
-                .collect(Collectors.toList());
+		// Dùng Java 8 Stream để lọc ra các đơn đặt tiệc thuộc về Customer này
+		List<Booking> myBookings = bookingDB.stream()
+				.filter(b -> b.getCustomer().getCustomerId().equals(this.customerId)).collect(Collectors.toList());
 
-        if (myBookings.isEmpty()) {
-            System.out.println("Bạn chưa có đơn đặt tiệc nào trong hệ thống.");
-        } else {
-            // In ra danh sách sử dụng forEach của Java 8
-            myBookings.forEach(b -> {
-                System.out.println("- Mã đơn: " + b.getBookingId() 
-                        + " | Ngày tổ chức: " + b.getEventDate() 
-                        + " | Trạng thái: " + b.getStatus());
-            });
-        }
-        System.out.println("==================================================");
-		
+		if (myBookings.isEmpty()) {
+			System.out.println("Bạn chưa có đơn đặt tiệc nào trong hệ thống.");
+		} else {
+			// In ra danh sách sử dụng forEach của Java 8
+			myBookings.forEach(b -> {
+				System.out.println("- Mã đơn: " + b.getBookingId() + " | Ngày tổ chức: " + b.getEventDate()
+						+ " | Trạng thái: " + b.getStatus());
+			});
+		}
+		System.out.println("==================================================");
+
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
-	public void notification(String message){
-		System.out.println(	
-			"🔔 [" + name + " nhận tin]: Hợp đồng của nhà hàng '" + invoice.getinvoiceId() + "' đã có mặt tại cửa hàng!");
 
+	public void notification(Invoice invoice) {
+		System.out.println("🔔 [" + this.getFullName() + " nhận tin]: Hợp đồng của nhà hàng '" + invoice.getInvoiceId()
+				+ "' đã có mặt tại cửa hàng!");
+
+	}
+
+	@Override
+	public void update(Invoice invoice) {
+		// TODO Auto-generated method stub
+		System.out.println(
+				"🔔 [" + this.getFullName() + " nhận tin]: Hóa đơn '" + invoice.getInvoiceId() + "' đã được xử lý!");
+	}
 }
