@@ -1,163 +1,133 @@
 package OOP;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Test {
 
-	// Các danh sách lưu trữ dữ liệu hệ thống
-	public static List<BanquetHall> BanquetHall = new ArrayList<>();
-	public static List<Staff> Staff = new ArrayList<>();
-	public static List<Menu> Menu = new ArrayList<>();
-	public static List<Booking> booking = new ArrayList<>();
-	public static List<Customer> Customer = new ArrayList<>();
-
-	static {
-		// 1. Khởi tạo Sảnh có sẵn
-
-		BanquetHall bh1 = new BanquetHall("H01", "Sao Vàng", 20, 5000000, "Trống");
-		BanquetHall bh2 = new BanquetHall("H02", "Mùa Thu", 30, 10000000, "Trống");
-		BanquetHall bh3 = new BanquetHall("H03", "Mùa Xuân", 50, 20000000, "Trống");
-		BanquetHall bh4 = new BanquetHall("H04", "Sao Băng", 60, 30000000, "Trống");
-		BanquetHall bh5 = new BanquetHall("H05", "Đại Hỷ", 90, 50000000, "Trống");
-		BanquetHall bh6 = new BanquetHall("H06", "Cát Tường", 100, 100000000, "Trống");
-		BanquetHall.add(bh1);
-		BanquetHall.add(bh2);
-		BanquetHall.add(bh3);
-		BanquetHall.add(bh4);
-		BanquetHall.add(bh5);
-		BanquetHall.add(bh6);
-
-		// 2. Khởi tạo Nhân viên có sẵn
-		Staff st1 = new Receptionist("REC01", "Hà Thị Loan", "Receptionist", "0976749067");
-		Staff st2 = new Receptionist("REC02", "Lê Bảo", "Receptionist", "0970015648");
-		Staff st3 = new Receptionist("REC03", "Trường Anh", "Receptionist", "0987659385");
-		Staff st4 = new Kitchen("KEC01", "Phạm Ngọc Linh", "Kitchen", "096547207");
-		Staff st5 = new Kitchen("KEC01", "Nguyễn Đoàn Mạnh duy", "Kitchen", "0969164925");
-		Staff st6 = new Kitchen("KEC01", "Hà Thị Linh", "Kitchen", "0986392655");
-		Staff st7 = new Kitchen("KEC01", "Nguyễn Hà Anh Sơn", "Kitchen", "0986392657");
-		Staff st8 = new Kitchen("KEC01", "Jonathan", "Kitchen", "0977825492");
-		Staff st9 = new Kitchen("KEC01", "Anna", "Kitchen", "0982720156");
-		Staff.add(st1);
-		Staff.add(st2);
-		Staff.add(st3);
-		Staff.add(st4);
-		Staff.add(st5);
-		Staff.add(st6);
-		Staff.add(st7);
-		Staff.add(st8);
-		Staff.add(st9);
-		
-        // 3. Khởi tạo menu
-		Menu M1 = new Menu("M01", "Gà Quay Tứ Xuyên", "Gỏi ngó sen, Chè khoai môn", 3500000);
-		Menu M2 = new Menu("M02", "Lẩu Hải Sản", "Súp bắp, Trái cây", 6500000);
-		Menu M3 = new Menu("M03", "Gà Quay Mật Ong", "Chả giò, Tiramisu", 9500000);
-		Menu M4 = new Menu("M04", "Heo quay", "Gỏi gà, Sữa chua", 7500000);
-		Menu M5 = new Menu("M05", "Lẩu cá tầm", "Salad trái cây, Bánh Flan", 8500000);
-		Menu M6 = new Menu("M06", "Gà lá giang", "salad cá hồi, Chè Thái", 2500000);
-		Menu M7 = new Menu("M01", "Beefsteak", "Salad cá ngừ, sinh tố trái cây", 1500000);
-		Menu M8 = new Menu("M07", "Vịt quay Tứ Xuyên", "Súp vi ca, Whey protein", 5500000);
-		Menu.add(M1);
-		Menu.add(M2);
-		Menu.add(M3);
-		Menu.add(M4);
-		Menu.add(M5);
-		Menu.add(M6);
-		Menu.add(M7);
-Menu.add(M8);
-		
- 		// 4. Khởi tạo các đơn đã đặt thành công hoặc bị hủy
-		// Cách 2: Dùng Calendar để tạo một ngày cụ thể (Ví dụ: 20/05/2024)
-		Calendar cal = Calendar.getInstance();
-		cal.set(2024, Calendar.MAY, 01);
-		Booking b1 = new Booking("B001", cal.getTime(), "Confirmed", 50000000);
-		cal.set(2024, Calendar.MAY, 15);
-		Booking b2 = new Booking("B002", cal.getTime(), "Cancelled", 70000000);
-		cal.set(2024, Calendar.MAY, 17);
-		Booking b3 = new Booking("B003", cal.getTime(), "Confirmed", 40000000);
-		cal.set(2024, Calendar.MAY, 18);
-		Booking b4 = new Booking("B004", cal.getTime(), "Cancelled", 60000000);
-		cal.set(2024, Calendar.MAY, 20);
-		Booking b5 = new Booking("B005", cal.getTime(), "Cancelled", 20000000);
-		cal.set(2024, Calendar.MAY, 25);
-		Booking b6 = new Booking("B006", cal.getTime(), "Cancelled", 90000000);
-		booking.add(b1);
-		booking.add(b2);
-		booking.add(b3);
-		booking.add(b4);
-		booking.add(b5);
-		booking.add(b6);
-
-	}
-
 	public static void main(String[] args) {
-		Manager admin = new Manager("MGR01", "Nguyễn Văn Tĩnh", "Manager", "0901");
-		Staff.add(admin);
-		
-		// Dieu kien kết quả doanh thu
-		double total = admin.calculateTotalRevenue(booking);
-		if (total > 100000000) {
-			System.out.println("=> Kết quả: Doanh thu tháng này đạt chỉ tiêu xuất sắc!");
-		} else {
-			System.out.println("=> Kết quả: Doanh thu tháng này Không đạt chỉ tiêu!");
-		}
-		
-		System.out.println("\n");
+		System.out.println("========== BẮT ĐẦU KIỂM THỬ TOÀN BỘ HỆ THỐNG ==========\n");
 
-		
-		
-		
-		// Hiển thị danh sách có sẵn ban đầu
-		System.out.println("=== DANH SÁCH SẢNH CÓ SẴN TRONG HỆ THỐNG ===");
-		DataBaseStore.BanquetHall.forEach(h -> {
-			System.out.printf("%s - %s - %d - %s - %,.0f VND\n", h.getHallId(), h.getHallName(), h.getCapacity(),
-					h.getStatus(), h.getBasePrice());
-		}); // Kết thúc forEach tại đây
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 1: KIỂM THỬ CHỨC NĂNG CỦA QUẢN LÝ (MANAGER) & SETUP HỆ THỐNG
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("--- 1. TEST CHỨC NĂNG QUẢN LÝ (MANAGER) ---");
+		Manager admin = new Manager("MGR01", "Nguyễn Văn Tĩnh", "0912345678");
 
-		System.out.println("\n--- THÊM SẢNH MỚI ---");
+		// Test thêm/xóa Sảnh tiệc
+		BanquetHall hall1 = new BanquetHall("H01", "Sảnh Kim Cương", 100, 50000000, "Trống");
+		admin.addBanquetHall(hall1);
+		admin.addBanquetHall(new BanquetHall("H02", "Sảnh Bạch Kim", 80, 40000000, "Trống"));
+		admin.removeBanquetHall("H02"); // Test xóa
+		admin.displayHalls(); // In danh sách
 
-		BanquetHall bh3 = new BanquetHall("H03", "Mùa Xuân", 50, 20000000, "Trống");
-		admin.addBanquetHall(bh3);
-		BanquetHall bh7 = new BanquetHall("H07", "Phượng Hoàng", 50, 20000000, "Trống");
-		admin.addBanquetHall(bh7);
+		// Test thêm/xóa Nhân viên
+		Staff rec1 = new Receptionist("REC01", "Lễ tân A", "Receptionist", "0988");
+		admin.addStaffAccount(rec1);
+		admin.displayStaffList();
 
-		System.out.println("\n=== DANH SÁCH SẢNH SAU KHI CẬP NHẬT ===");
-		DataBaseStore.BanquetHall.forEach(h -> {
-			// Sử dụng printf để định dạng tiền tệ đẹp mắt (%,.0f)
-			System.out.printf("%s - %s - %d người - %s - %,.0f VND\n", h.getHallId(), h.getHallName(), h.getCapacity(),
-					h.getStatus(), h.getBasePrice());
-		});
+		// Test thêm/xóa Thực đơn qua Manager
+		Menu menu1 = new Menu("M01", "Combo Đám Cưới 1", "Trọn gói", 5000000);
+		admin.addMenu(menu1);
+		admin.displayMenuList();
 
-		System.out.println("\n--- XÓA SẢNH CŨ ---");
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 2: KIỂM THỬ TÀI KHOẢN KHÁCH HÀNG (CUSTOMER) & OBSERVER PATTERN
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("\n--- 2. TEST TÀI KHOẢN KHÁCH HÀNG ---");
+		Customer customer1 = new Customer("C01", "Trần Khách Hàng", "0999888777", "khach@gmail.com", "Hà Nội",
+				"123456");
 
-		admin.removeBanquetHall(bh3.getHallId());
+		// Đăng ký và Đăng nhập
+		customer1.registerAccount();
+		customer1.registerAccount(); // Thử đăng ký lại để test báo lỗi trùng Email
+		Customer.login("khach@gmail.com", "123456"); // Test login đúng
+		Customer.login("khach@gmail.com", "sai_pass"); // Test login sai
 
-		System.out.println("\n=== DANH SÁCH SẢNH SAU KHI CẬP NHẬT ===");
-		DataBaseStore.BanquetHall.forEach(h -> {
-			// Sử dụng printf để định dạng tiền tệ đẹp mắt (%,.0f)
-			System.out.printf("%s - %s - %d người - %s - %,.0f VND\n", h.getHallId(), h.getHallName(), h.getCapacity(),
-					h.getStatus(), h.getBasePrice());
-		});
-System.out.println("\n");
-        //PHỤC VU CHO NHÂN VIÊN
-		// Hiển thị danh sách có sẵn ban đầu
-		System.out.println("=== DANH SÁCH NHÂN VIÊN CÓ SẴN TRONG HỆ THỐNG ===");
-		DataBaseStore.Staff.forEach(s -> {
-			System.out.printf("%s - %s - %s - %s\n", s.staffId, s.fullName, s.role, s.phone);
-		}); // Kết thúc forEach tại đây
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 3: KIỂM THỬ THÊM DỊCH VỤ & THỰC ĐƠN ĐỘC LẬP
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("\n--- 3. TEST DỊCH VỤ (SERVICE) VÀ THỰC ĐƠN (MENU) ---");
+		Service s1 = new Service("SV01", "Thuê Ca Sĩ", 2000000);
+		s1.addService();
+		s1.calculateServiceFee(3); // Test tính phí 3 ca sĩ
 
-		
-		
-		
-		System.out.println("\n");
-		//PHỤC VỤ CHO MENU
-		// Hiển thị danh sách có sẵn ban đầu
-				System.out.println("=== DANH SÁCH Menu CÓ SẴN TRONG HỆ THỐNG ===");
-				DataBaseStore.Menu.forEach(m -> {
-					System.out.printf("%s - %s - %s - %,.0f VND\n", m.getMenuId(), m.getDishName(), m.getCategory(), m.getPricePerTable() );
-				}); // Kết thúc forEach tại đây
-		
+		Menu m2 = new Menu("M02", "Lẩu Thái Hải Sản", "Món Chính", 3000000);
+		m2.addDish();
+		m2.updateMenuPrice(3500000); // Test cập nhật giá tiền món ăn
+
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 4: KIỂM THỬ LUỒNG ĐẶT TIỆC (BOOKING) & THANH TOÁN (STRATEGY
+		 * PATTERN)
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("\n--- 4. TEST ĐẶT TIỆC VÀ THANH TOÁN ---");
+
+		// Tạo ngày sự kiện là 15 ngày sau kể từ hôm nay
+		Calendar eventDate = Calendar.getInstance();
+		eventDate.add(Calendar.DAY_OF_MONTH, 15);
+
+		Booking booking1 = new Booking("B001", new Date(), eventDate.getTime(), "Tối", "PENDING", 50000000);
+
+		System.out.println("Tổng tiền dự kiến (Base): " + booking1.calculateTotal() + " VNĐ");
+		System.out.println("Tiền cọc cần thanh toán (30%): " + booking1.calculateDeposit() + " VNĐ");
+
+		// Áp dụng Strategy Pattern cho Thanh Toán (Credit Card)
+		IPayment creditCardPay = new CreditCardPayment();
+		Invoice invoice1 = new Invoice("INV001", new Date(), 0.1, booking1.calculateTotal(), "CreditCard");
+
+		// Khách hàng tiến hành thanh toán cọc để xác nhận
+		System.out.println("\n[Khách hàng tiến hành thanh toán cọc]");
+		booking1.confirmBooking(creditCardPay); // Gọi logic xác nhận cọc của Booking
+
+		// Test Observer: Gửi thông báo hóa đơn cho khách hàng
+		customer1.update(invoice1);
+
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 5: KIỂM THỬ HỦY TIỆC (BOOKING MANAGER) & TÍNH PHÍ PHẠT
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("\n--- 5. TEST HỦY ĐƠN VÀ TÍNH PHÍ PHẠT ---");
+		BookingManager bookingManager = new BookingManager();
+
+		// Test khách hàng chủ động hủy
+		bookingManager.customerCancelBooking(booking1);
+
+		// Test hệ thống tự động hủy (Setup timeout giả lập)
+		Booking booking2 = new Booking("B002", new Date(), eventDate.getTime(), "Sáng", "PENDING", 20000000);
+		bookingManager.setupTimeoutCancel(booking2); // Sẽ chạy ngầm tiến trình 24h
+
+		/*
+		 * =============================================================================
+		 * ======= PHẦN 6: KIỂM THỬ BÁO CÁO THỐNG KÊ (REPORT)
+		 * =============================================================================
+		 * =======
+		 */
+		System.out.println("\n--- 6. TEST BÁO CÁO THỐNG KÊ CHO QUẢN LÝ ---");
+
+		// Giả lập danh sách hóa đơn và Booking để thống kê
+		Invoice invoice2 = new Invoice("INV002", 0.1, 40000000); // Đơn giản hóa constructor
+		List<Invoice> invoiceList = Arrays.asList(invoice1, invoice2);
+		List<Booking> currentBookings = Arrays.asList(booking1, booking2);
+
+		admin.reportRevenue(invoiceList); // In tổng doanh thu
+		admin.reportBookingStats(currentBookings); // Đếm số lượng theo trạng thái
+
+		System.out.println("\n========== HOÀN TẤT KIỂM THỬ ==========");
 	}
-
 }
