@@ -1,8 +1,10 @@
-package OOP
+package OOP;
 
-public class interface Subject {
-  void registerObverver();
-  void removeObserver();
-  void notifyObserver();
+public interface Subject {
+	void registerObserver(Observer o);
+
+	void removeObserver(Observer o);
+
+	void notifyObservers();
 
 }
