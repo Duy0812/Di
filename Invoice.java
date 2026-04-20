@@ -9,6 +9,7 @@ public class Invoice {
 	private double totalAmount;
 	private String paymentMethod;
 	private IPayment paymentProcessor; // Sử dụng Interface
+	private Booking booking;
 
 	public Invoice(String invoiceId, Date paymentDate, double tax, double totalAmount, String paymentMethod) {
 		super();
@@ -17,7 +18,6 @@ public class Invoice {
 		this.tax = tax;
 		this.totalAmount = totalAmount;
 		this.paymentMethod = paymentMethod;
-		this.paymentProcessor = paymentProcessor;
 	}
 
 	public Invoice(String id, double tax, double totalAmount) {
@@ -25,6 +25,14 @@ public class Invoice {
 		this.tax = tax;
 		this.totalAmount = totalAmount;
 		this.paymentDate = new Date();
+	}
+
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 	public void processPayment(IPayment method) {
@@ -41,6 +49,7 @@ public class Invoice {
 	public void refundDeposit(double amount) {
 		System.out.println("Hoàn tiền cọc: " + amount);
 	}
+
 	public void setPaymentMethod(IPayment method) {
 		this.paymentProcessor = method;
 	}
@@ -53,23 +62,22 @@ public class Invoice {
 		return paymentDate;
 	}
 
-    public void executeOrder(IPayment method, double amountToPay) {
-        // Thực thi thanh toán và lấy kết quả boolean
-        boolean isSuccess = method.processPayment(amountToPay);
+	public void executeOrder(IPayment method, double amountToPay) {
+		// Thực thi thanh toán và lấy kết quả boolean
+		boolean isSuccess = method.processPayment(amountToPay);
 
-        if (isSuccess) {
-            System.out.println("Hệ thống: Bắt đầu cập nhật trạng thái hóa đơn...");
-            // Chỉ khi thành công mới cập nhật trạng thái Booking
-            if (amountToPay >= booking.getTotalAmount()) {
-                booking.setStatus("Confirmed");
-            } else {
-                booking.setStatus("Deposit Paid");
-            }
-        } else {
-            System.out.println("Hệ thống: Thanh toán thất bại. Vui lòng thử lại!");
-            booking.setStatus("Payment Failed");
-        }
-    }
-}
-
+		booking = new Booking(invoiceId, new Date(), new Date(), "Ca Toi", "Pending", amountToPay);
+		if (isSuccess) {
+			System.out.println("Hệ thống: Bắt đầu cập nhật trạng thái hóa đơn...");
+			// Chỉ khi thành công mới cập nhật trạng thái Booking
+			if (amountToPay >= booking.getDepositAmount()) {
+				booking.setStatus("Confirmed");
+			} else {
+				booking.setStatus("Deposit Paid");
+			}
+		} else {
+			System.out.println("Hệ thống: Thanh toán thất bại. Vui lòng thử lại!");
+			booking.setStatus("Payment Failed");
+		}
+	}
 }
