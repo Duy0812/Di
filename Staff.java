@@ -1,10 +1,10 @@
 package OOP;
 
 public class Staff {
-	private String staffId;
-	private String fullName;
-	private String role;
-	private String phone;
+	protected String staffId;
+	protected String fullName;
+	protected String role;
+	protected String phone;
 
 	public Staff(String staffId, String fullName, String role, String phone) {
 		super();
@@ -53,11 +53,9 @@ public class Staff {
 	public void manageSchedule() {
 		System.out.println(this.fullName + " đang quản lý lịch trình.");
 	}
-	
-	public String toString() {
-        return String.format("ID: %s | Tên: %-15s | Chức vụ: %-12s | SĐT: %s", 
-                              staffId, fullName, role, phone);
-    }
 
+	public String toString() {
+		return String.format("ID: %s | Tên: %-15s | Chức vụ: %-12s | SĐT: %s", staffId, fullName, role, phone);
+	}
 
 }
