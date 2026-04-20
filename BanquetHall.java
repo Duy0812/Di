@@ -1,6 +1,8 @@
 package OOP;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BanquetHall {
 	private String hallId;
@@ -44,6 +46,7 @@ public class BanquetHall {
 	public void setHallId(String hallId) {
 		this.hallId = hallId;
 	}
+
 // danh sách đặt tiệc
 	private List<Booking> hallBooking = new ArrayList<Booking>();
 
@@ -55,7 +58,7 @@ public class BanquetHall {
 		for (int i = 0; i < hallBooking.size(); i++) {
 			Booking b = hallBooking.get(i);
 			// check ngày đặt và chổ ngòi
-			if (b.getEvenDate().compareTo(date) == 0 && b.getShift().equalsIgnoreCase(shift)) {
+			if (b.getEventDate().compareTo(date) == 0 && b.getShift().equalsIgnoreCase(shift)) {
 				System.out.println("Sảnh đã đặt");
 				return false;
 			}
