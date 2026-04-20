@@ -1,4 +1,4 @@
-package Wed_wedding;
+package OOP;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class Booking {
 				total += m.getPricePerTable();
 		for (Service s : services)
 			if (s != null)
-				total += s.calculateServiceFee();
+				total += s.calculateServiceFee(0);
 		return total;
 	}
 
@@ -114,6 +114,50 @@ public class Booking {
 
 	public String getBookingId() {
 		return bookingId;
+	}
+
+	public Customer getCustomer() {
+		// TODO Auto-generated method stub
+		return this.customer;
+	}
+
+	public String getStatus() {
+		// TODO Auto-generated method stub
+		return this.status = status;
+	}
+
+	public double getDepositAmount() {
+		// TODO Auto-generated method stub
+		return calculateDeposit();
+	}
+
+	public void setStatus(String string) {
+		// TODO Auto-generated method stub	
+	}
+
+	public boolean isDepositPaid() {
+		return isDepositPaid;
+	}
+
+	public void setDepositPaid(boolean isDepositPaid) {
+		this.isDepositPaid = isDepositPaid;
+	}
+
+	public Object getMenuId() {
+		// TODO Auto-generated method stub
+		return this.getMenuId();
+	}
+
+	public Object hasMenu(String targetMenuId) {
+		// TODO Auto-generated method stub
+		if (this.menus == null || this.menus.isEmpty()) return false;
+		return menus.stream().anyMatch(m -> m.getMenuId().equals(targetMenuId));
+	}
+
+	public Object hasService(String targetServiceId) {
+		// TODO Auto-generated method stub
+		if (this.services == null || this.services.isEmpty()) return false;
+		return services.stream().anyMatch(s -> s.getServiceId().equals(targetServiceId));
 	}
 
 }
