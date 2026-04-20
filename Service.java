@@ -1,61 +1,79 @@
 package OOP;
 
-public class Staff {
-	protected String staffId;
-	protected String fullName;
-	protected String role;
-	protected String phone;
+import java.util.ArrayList;
+import java.util.List;
 
-	public Staff(String staffId, String fullName, String role, String phone) {
-		super();
-		this.staffId = staffId;
-		this.fullName = fullName;
-		this.role = role;
-		this.phone = phone;
+public class Service {
+	private String serviceId;
+	private String serviceName;
+	private double unitPrice;
+	private static List<Service> serviceDB = new ArrayList<>();
+
+	public String getServiceId() {
+		return serviceId;
 	}
 
-	public String getStaffId() {
-		return staffId;
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
 	}
 
-	public void setStaffId(String staffId) {
-		this.staffId = staffId;
+	public Service(String serviceId, String serviceName, double unitPrice) {
+		this.serviceId = serviceId;
+		this.serviceName = serviceName;
+		this.unitPrice = unitPrice;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public boolean addService() {
+		boolean isExist = serviceDB.stream().anyMatch(s -> s.getServiceId().equals(this.serviceId));
+		if (isExist) {
+			System.out.println("❌ Thêm thất bại: Mã dịch vụ '" + this.serviceId + "' đã tồn tại.");
+			return false;
+		}
+		serviceDB.add(this);
+		System.out.println("✅ Đã thêm dịch vụ mới: " + this.serviceName);
+		return true;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public double calculateServiceFee(int quantity) {
+		// Trong trường hợp dịch vụ tính theo số lượng (VD: thuê 3 ca sĩ, 2 máy chiếu)
+		double totalFee = this.unitPrice * quantity;
+		System.out.println("   -> Phí dịch vụ '" + this.serviceName + "' (SL: " + quantity + "): "
+				+ String.format("%,.0f", totalFee) + " VNĐ");
+		return totalFee;
 	}
 
-	public String getRole() {
-		return role;
+	public double getServiceFee() {
+		return calculateServiceFee(getUnitPrice());
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public static boolean deleteService(String targetServiceId, List<Booking> allBookings) {
+		System.out.println("\n[YÊU CẦU XÓA DỊCH VỤ]: " + targetServiceId);
+
+		boolean isInActiveBooking = allBookings.stream()
+				.filter(b -> b.getStatus().equals("Pending") || b.getStatus().equals("Confirmed")).anyMatch(b -> {
+					return false; // Thay bằng b.hasService(targetServiceId) nếu Booking đã hoàn thiện
+				});
+
+		if (isInActiveBooking) {
+			System.out.println("⛔ TỪ CHỐI XÓA: Dịch vụ này đang được khách hàng đặt cho sự kiện sắp tới!");
+			return false;
+		}
+
+		boolean removed = serviceDB.removeIf(s -> s.getServiceId().equals(targetServiceId));
+		if (removed) {
+			System.out.println("✅ Đã xóa hoàn toàn dịch vụ '" + targetServiceId + "' khỏi hệ thống.");
+		}
+		return removed;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getServiceName() {
+		// TODO Auto-generated method stub
+		return serviceName;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void confirmBooking(String bookingId) {
-		System.out.println(this.fullName + " đã xác nhận đơn: " + bookingId);
-	}
-
-	public void manageSchedule() {
-		System.out.println(this.fullName + " đang quản lý lịch trình.");
-	}
-
-	public String toString() {
-		return String.format("ID: %s | Tên: %-15s | Chức vụ: %-12s | SĐT: %s", staffId, fullName, role, phone);
+	public int getUnitPrice() {
+		// TODO Auto-generated method stub
+		return (int) this.unitPrice;
 	}
 
 }
