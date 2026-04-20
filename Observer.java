@@ -1,5 +1,5 @@
 package OOP;
 
 public interface Observer {
-  void update (String message);
+  void update (Invoice invoice);
 }
