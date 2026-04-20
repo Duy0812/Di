@@ -2,8 +2,8 @@ package OOP;
 
 public class Kitchen extends Staff {
 
-	public Kitchen(String staffId, String fullName, String phone) {
-		super(staffId, fullName, "Kitchen", phone);
+	public Kitchen(String staffId, String fullName, String role, String phone) {
+		super(staffId, fullName, role, phone);
 		// TODO Auto-generated constructor stub
 	}
 
